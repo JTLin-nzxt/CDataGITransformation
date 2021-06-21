@@ -10,7 +10,7 @@ namespace CDataGITransformation
         {
             Console.WriteLine("Enter the xml folder path :");
 
-            //string filePath = Console.ReadLine();
+            //string folderPath = Console.ReadLine();
             string folderPath = Directory.GetCurrentDirectory();
 
             string[] xmlFiles = Directory.GetFiles(folderPath, "*.xml", SearchOption.AllDirectories);
@@ -20,7 +20,7 @@ namespace CDataGITransformation
                 CDataGITransforming(xmlFile);
             }
         }
-        public static void CDataGITransforming(string filePath) 
+        public static void CDataGITransforming(string filePath)
         {
             var xmldoc = new XmlDocument();
             xmldoc.Load(filePath);
@@ -29,8 +29,15 @@ namespace CDataGITransformation
             XmlNodeList giresultNodes = xmldoc.GetElementsByTagName("GIResult");
             foreach (XmlNode giresultNode in giresultNodes)
             {
-                string upperCaption = giresultNode.Attributes["Caption"].Value.ToUpper();
-                giresultNode.Attributes["Caption"].Value = upperCaption;
+                try
+                {
+                    string upperCaption = giresultNode.Attributes["Caption"].Value.ToUpper();
+                    giresultNode.Attributes["Caption"].Value = upperCaption;
+                }
+                catch (Exception e)
+                {
+                    //do nothing
+                }
             }
 
             xmldoc.Save(filePath);
